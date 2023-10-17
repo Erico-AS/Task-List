@@ -1,10 +1,10 @@
 import './App.css'
-import TaskApp from './pages/TaskApp'
+import AppRoutes from './routes.jsx'
 
 function App() {
   return (
     <>
-      <TaskApp></TaskApp>
+      <AppRoutes />
     </>
   )
 }

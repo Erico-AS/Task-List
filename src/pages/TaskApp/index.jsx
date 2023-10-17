@@ -1,34 +1,65 @@
-import { useState } from 'react'
+import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import './styles.css'
+import './styles.css';
+import { useEffect } from 'react';
+
 const TaskApp = () => {
-    let [tarefas, setTarefas] = useState([])
-    let [tarefa, setTarefa] = useState('')
+  const [tarefas, setTarefas] = useState([]);
+  const [tarefasConcluidas, setTarefasConcluidas] = useState([])
+  const [tarefa, setTarefa] = useState('');
 
-    function adicionarTarefa() {
-        setTarefas([...tarefas, tarefa])
-        console.log(tarefas)
-        setTarefa("")
+  function adicionarTarefa() {
+    if (tarefa.trim() !== '') {
+      setTarefas([...tarefas, { t: tarefa, estado: true }]);
+      setTarefa('');
     }
+  }
 
-    return (<>
-        <form>
-            <textarea id='tarefa' value={tarefa} onChange={(e) => setTarefa(e.target.value)}></textarea>
-            <button type='button' onClick={tarefa != '' ? () => {adicionarTarefa()} : null}>+</button>
-        </form>
+  function alterarEstadoTarefa(index, elemento) {
+      console.log(tarefas[index].estado)
+    if (tarefas[index].estado == false) {
+        elemento.classList = 'task'
+        tarefas[index].estado = true
+        const novaLista = tarefas.slice(index,1)
+        console.log(novaLista)
+    } else {
+        elemento.classList = 'taskConcluida'
+        tarefas[index].estado = false
+        const novaLista = tarefas.slice(index,1)
+        console.log(novaLista)
+        setTarefasConcluidas(novaLista);
+    }
+  }
 
-        <main>
-            {tarefas.length > 0 && (
-                tarefas.map((task, index) => (
-                    <div className='task' key={index}>
-                        {task}
-                        <input type="radio" name="radio" className='checkmark'></input>
-                        <DeleteIcon />
-                    </div>
-                ))
-            )}
-        </main>
-    </>)
+  function removerTarefa(index) {
+    const novaLista = [...tarefas];
+    novaLista.splice(index, 1);
+    setTarefas(novaLista);
+  }
+
+  return (
+    <>
+      <form>
+        <textarea id='tarefa' value={tarefa} onChange={(e) => setTarefa(e.target.value)}></textarea>
+        <button type='button' onClick={adicionarTarefa}>+</button>
+      </form>
+
+      <main>
+        {tarefas.length > 0 &&
+          tarefas.map((task, index) => (
+            <div className='task' key={index}>
+              {task.t}
+              <input type='checkbox' name="radio" className='checkmark' onChange={(e) => alterarEstadoTarefa(index, e.target.parentElement)}></input>
+              <button onClick={() => removerTarefa(index)}>
+                <DeleteIcon />
+              </button>
+            </div>
+          ))
+        }
+      </main>
+    </>
+  );
 }
 
-export default TaskApp
+export default TaskApp;
+
