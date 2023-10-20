@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import TaskList from '../../compontents/TaskList'; 
+import {tarefasConcluidas} from '../TaskApp'
 
-function Concluidas({ tarefasConcluidas, alterarEstadoTarefa, removerTarefa }) {
+const Concluidas = (tarefasConcluidas) => {
+  console.log(tarefasConcluidas.tarefasConcluidas)
   return (
     <>
       <header>
@@ -9,17 +12,16 @@ function Concluidas({ tarefasConcluidas, alterarEstadoTarefa, removerTarefa }) {
       </header>
       <div>
         <h2>Tarefas Concluídas</h2>
-        {/*tarefasConcluidas.length > 0 ? (
+        {tarefasConcluidas.length > 0 ? (
           tarefasConcluidas.map((task, index) => (
             <TaskList key={index} task={task} num={index} alterarEstadoTarefa={alterarEstadoTarefa} removerTarefa={removerTarefa}/>
           ))
         ) : (
           <p>Nenhuma tarefa concluída.</p>
-        )*/}
+        )}
       </div>
     </>
   );
 }
 
 export default Concluidas;
-

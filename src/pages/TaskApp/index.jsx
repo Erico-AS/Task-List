@@ -28,7 +28,7 @@ const TaskApp = () => {
       const novaListaConcluidas = tarefasConcluidas.filter((_, i) => i !== num);
       setTarefasConcluidas(novaListaConcluidas);
     } else {
-      const tarefaMovida = novaLista.splice(num, 1)[0];
+      const tarefaMovida = novaLista.splice(num, 1)[0]      
       setTarefasConcluidas([...tarefasConcluidas, tarefaMovida]);
     }
   }
@@ -53,17 +53,17 @@ const TaskApp = () => {
         >
           Mostrar Ativas
         </button>
-        <Link to='/concluidas'>
-          <button
-            type='button'
-            onClick={() => {
-              setMostrarAtivas(false);
-              setMostrarConcluidas(true);
-            }}
-          >
-            Mostrar Concluídas
-          </button>
-        </Link>
+          <Link to={'/concluidas'}>
+        <button
+          type='button'
+          onClick={() => {
+            setMostrarAtivas(false);
+            setMostrarConcluidas(true);
+          }}
+        >
+          Mostrar Concluídas
+        </button>
+      </Link>
       </form>
 
       <main>
@@ -85,4 +85,3 @@ const TaskApp = () => {
 };
 
 export default TaskApp
-
