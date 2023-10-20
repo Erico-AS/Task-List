@@ -1,0 +1,15 @@
+              <div className='taskConcluida' key={index}>
+                  {task.t}
+                  <input
+                    type='checkbox'
+                    name='radio'
+                    className='checkmark'
+                    onChange={(e) =>
+                      alterarEstadoTarefa(index, e.target.parentElement)
+                    }
+                    checked
+                  ></input>
+                  <button onClick={() => removerTarefa(index)}>
+                    <DeleteIcon />
+                  </button>
+                </div>

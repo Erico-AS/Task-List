@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
 import './styles.css';
-import { useEffect } from 'react';
+import TaskList from '../../compontents/TaskList';
+import Concluidas from '../Concluidas';
 import { Link } from 'react-router-dom';
 
 const TaskApp = () => {
   const [tarefas, setTarefas] = useState([]);
-  const [tarefasConcluidas, setTarefasConcluidas] = useState([])
+  const [tarefasConcluidas, setTarefasConcluidas] = useState([]);
   const [tarefa, setTarefa] = useState('');
+
   const [mostrarAtivas, setMostrarAtivas] = useState(true);
   const [mostrarConcluidas, setMostrarConcluidas] = useState(false);
 
@@ -18,23 +19,19 @@ const TaskApp = () => {
     }
   }
 
-  function alterarEstadoTarefa(index, elemento) {
-    const novaLista = [...tarefas];
-    novaLista[index].estado = !novaLista[index].estado;
-  
-    if (novaLista[index].estado) {
-      elemento.classList = 'task';
-      const novaListaConcluidas = tarefasConcluidas.filter((_, i) => i !== index);
+  function alterarEstadoTarefa(num) {
+    const novaLista = [...tarefas]
+    novaLista[num].estado = !novaLista[num].estado;
+    setTarefas(novaLista);
+
+    if (novaLista[num].estado) {
+      const novaListaConcluidas = tarefasConcluidas.filter((_, i) => i !== num);
       setTarefasConcluidas(novaListaConcluidas);
     } else {
-      elemento.classList = 'taskConcluida';
-      const tarefaMovida = novaLista.splice(index, 1)[0];
+      const tarefaMovida = novaLista.splice(num, 1)[0];
       setTarefasConcluidas([...tarefasConcluidas, tarefaMovida]);
     }
-  
-    setTarefas(novaLista);
   }
-  
 
   function removerTarefa(index) {
     const novaLista = [...tarefas];
@@ -60,54 +57,32 @@ const TaskApp = () => {
           <button
             type='button'
             onClick={() => {
-            setMostrarAtivas(false);
-            setMostrarConcluidas(true);
-          }}
-        > Mostrar Concluídas  
-        </button>
-      </Link>
-      
-      {mostrarConcluidas && (<Concluidas tarefasConcluidas={tarefasConcluidas} />)}
-
+              setMostrarAtivas(false);
+              setMostrarConcluidas(true);
+            }}
+          >
+            Mostrar Concluídas
+          </button>
+        </Link>
       </form>
 
       <main>
         {tarefas.length > 0 &&
-        (mostrarAtivas
-          ? tarefas.map((task, index) => (
-            <div className='task' key={index}>
-              {task.t}
-              <input type='checkbox' name="radio" className='checkmark' onChange={(e) => alterarEstadoTarefa(index, e.target.parentElement)}></input>
-              <button onClick={() => removerTarefa(index)}>
-                <DeleteIcon />
-              </button>
-            </div>
-          ))
-        : null)}
-        {tarefasConcluidas.length > 0 &&
-          (mostrarConcluidas
-            ? tarefasConcluidas.map((task, index) => (
-                <div className='taskConcluida' key={index}>
-                  {task.t}
-                  <input
-                    type='checkbox'
-                    name='radio'
-                    className='checkmark'
-                    onChange={(e) =>
-                      alterarEstadoTarefa(index, e.target.parentElement)
-                    }
-                    checked
-                  ></input>
-                  <button onClick={() => removerTarefa(index)}>
-                    <DeleteIcon />
-                  </button>
-                </div>
+          mostrarAtivas
+            ? tarefas.map((task, index) => (
+                <TaskList key={index} task={task} num={index} alterarEstadoTarefa={alterarEstadoTarefa} removerTarefa={removerTarefa}/>
               ))
-            : null)}
+            : null}
+        {tarefasConcluidas.length > 0 &&
+          mostrarConcluidas
+            ? tarefasConcluidas.map((task, index) => (
+                <TaskList key={index} task={task} num={index} alterarEstadoTarefa={alterarEstadoTarefa} removerTarefa={removerTarefa}/>
+              ))
+            : null}
       </main>
     </>
   );
-}
+};
 
-export default TaskApp;
+export default TaskApp
 
