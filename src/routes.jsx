@@ -4,11 +4,13 @@ import Concluidas from './pages/Concluidas'
 import TaskApp from './pages/TaskApp'
 
 function AppRoutes() {
+    const [tarefasConcluidas, setTarefasConcluidas] = React.useState([]);
+
     return (
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<TaskApp />} />
-                <Route path="/concluidas" element={<Concluidas />} />
+                <Route path='/concluidas' element={<Concluidas tarefasConcluidas={tarefasConcluidas} />} />
             </Routes>
         </BrowserRouter>
     )
